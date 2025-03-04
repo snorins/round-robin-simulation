@@ -51,6 +51,12 @@ readonly class TournamentSimulatorService
              *     4 => 'Chelsea',
              *     5 => 'Liverpool',
              * ];
+             *
+             * $pairs = [
+             *     0 => 5,
+             *     1 => 4,
+             *     2 => 3,
+             * ];
              */
             $teamOneIndexes = array_slice($shiftedIndexes, 0, $middleIndex);
             $teamTwoIndexes = array_reverse(array_slice($shiftedIndexes, $middleIndex));
