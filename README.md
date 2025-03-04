@@ -1,12 +1,12 @@
 ## Round-Robin Tournament Simulation with Results Visualization
 
 Simple round-robin tournament simulation web application. Supports up to 12 total teams.  
-The application is fully dockerized using Alpine images to facilitate smooth and fast setup.
+The application is fully dockerized using Alpine images to facilitate a smooth and fast setup.
 
-<img width="400" alt="Tournament creation page" src="https://github.com/user-attachments/assets/a31e29f4-fae2-4dae-a3c7-1ecc364c61bb" />
-<img width="400" alt="Tournament games page" src="https://github.com/user-attachments/assets/a21b0d73-1884-48b9-8bc8-382aa1f8b845" />
-<img width="400" alt="Tournament view page" src="https://github.com/user-attachments/assets/a37273dc-ed76-4ee7-8676-4a62025be0ca" />
-<img width="400" alt="Tournament games page" src="https://github.com/user-attachments/assets/27ae397e-024b-4f75-9898-e24abd5f4e6e" />
+<img width="400" alt="Tournament creation page" src="https://github.com/user-attachments/assets/a2839013-77cb-431f-9610-2a31d165e3bd" />
+<img width="400" alt="Tournament games page" src="https://github.com/user-attachments/assets/ab96de4a-41e9-44c1-8302-cc132519a0c6" />
+<img width="400" alt="Tournament view page" src="https://github.com/user-attachments/assets/111a7a18-c805-4a20-b979-93e7924c524b" />
+<img width="400" alt="Tournament games page" src="https://github.com/user-attachments/assets/e5fb5345-4139-4097-9c91-bfa707bc1549" />
 
 ### Core Technologies
 - PHP 8.4.4
