@@ -13,7 +13,7 @@ const router = useRouter();
 const page = ref<number>(Number(route.query.page) || 1);
 const paginatedTeams = ref<PaginatedEntries<Team>>();
 
-const loadData = (page: number): void => {
+const fetchTeams = (page: number): void => {
   if (page < 1 || (paginatedTeams.value && page > paginatedTeams.value.pages)) {
     return;
   }
@@ -25,7 +25,7 @@ const loadData = (page: number): void => {
   router.push({ query: { page } });
 };
 
-loadData(page.value);
+fetchTeams(page.value);
 </script>
 
 <template>
@@ -60,6 +60,6 @@ loadData(page.value);
   <Paginator
       v-if="paginatedTeams"
       :data="paginatedTeams"
-      @page-change="loadData"
+      @page-change="fetchTeams"
   />
 </template>

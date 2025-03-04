@@ -1,14 +1,15 @@
+export type TournamentCreateResponse = Pick<Tournament, 'id'>;
+
+export type TournamentViewResponse = {
+    name: string;
+    teams: TournamentViewTeam[];
+    rounds: TournamentViewRound[];
+}
+
 export type Tournament = {
     id: number;
     name: string;
     teamCount: number;
-    createdAt: number;
-}
-
-export type TournamentView = {
-    name: string;
-    teams: TournamentViewTeam[]
-    rounds: TournamentViewRound[]
 }
 
 type TournamentViewTeam = {
@@ -20,7 +21,7 @@ type TournamentViewTeam = {
 
 type TournamentViewRound = {
     current: number;
-    games: TournamentViewGame[]
+    games: TournamentViewGame[];
 }
 
 type TournamentViewGame = {

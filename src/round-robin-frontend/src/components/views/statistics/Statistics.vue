@@ -15,7 +15,7 @@ ApiService
 </script>
 
 <template>
-  <p v-if="statistics.tournaments.length < 1 || statistics.teams.length < 1">
+  <p v-if="statistics.tournaments.length < 1 && statistics.teams.length < 1">
     No stats to show right now...
   </p>
 

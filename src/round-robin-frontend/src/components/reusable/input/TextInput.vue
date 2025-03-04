@@ -3,7 +3,7 @@ defineProps<{
   id: string;
   errorMessage: string;
   placeholder?: string;
-}>()
+}>();
 
 const model = defineModel<string>({ required: true });
 </script>

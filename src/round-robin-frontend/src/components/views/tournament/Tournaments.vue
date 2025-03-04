@@ -4,8 +4,8 @@ import { useRoute, useRouter } from 'vue-router';
 import { ApiService } from '../../../services/api.service.ts';
 import type { Tournament } from '../../../types/tournament.type.ts';
 import type { PaginatedEntries } from '../../../types/pagination.type.ts';
-import Paginator from '../../reusable/pagination/Paginator.vue';
 import { API_ENDPOINT } from '../../../constants/api.constant.ts';
+import Paginator from '../../reusable/pagination/Paginator.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -13,7 +13,7 @@ const router = useRouter();
 const page = ref<number>(Number(route.query.page) || 1);
 const paginatedTournaments = ref<PaginatedEntries<Tournament>>();
 
-const loadData = (page: number): void => {
+const fetchTournaments = (page: number): void => {
   if (page < 1 || (paginatedTournaments.value && page > paginatedTournaments.value.pages)) {
     return;
   }
@@ -25,7 +25,7 @@ const loadData = (page: number): void => {
   router.push({ query: { page } });
 };
 
-loadData(page.value);
+fetchTournaments(page.value);
 </script>
 
 <template>
@@ -59,6 +59,6 @@ loadData(page.value);
   <Paginator
       v-if="paginatedTournaments"
       :data="paginatedTournaments"
-      @page-change="loadData"
+      @page-change="fetchTournaments"
   />
 </template>

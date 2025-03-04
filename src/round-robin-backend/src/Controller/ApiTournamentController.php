@@ -35,7 +35,6 @@ final class ApiTournamentController extends AbstractController
         $paginationBuilder->mapEntries(fn(Tournament $tournament) => [
             'id' => $tournament->getId(),
             'name' => $tournament->getName(),
-            'createdAt' => $tournament->getCreatedAt(),
             'teamCount' => $repository->getTeamCount($tournament),
         ]);
 
@@ -50,8 +49,8 @@ final class ApiTournamentController extends AbstractController
         TournamentRepository $tournamentRepository,
         TournamentSimulatorService $tournamentSimulator,
     ): JsonResponse {
-        $name = $request->getPayload()->get('name');
-        $teamCount = $request->getPayload()->get('teamCount');
+        $name = $request->getPayload()->getString('name');
+        $teamCount = $request->getPayload()->getInt('teamCount');
 
         if (strlen($name) > Tournament::NAME_LENGTH_MAX) {
             $this->apiErrors->add('name', 'Name can not be longer than ' . Tournament::NAME_LENGTH_MAX . ' characters');
@@ -76,9 +75,6 @@ final class ApiTournamentController extends AbstractController
             teamCount: $teamCount,
             tournament: $tournament,
         );
-
-        // Simulate a little more heavy processing.
-        sleep(seconds: 1);
 
         return $this->getSuccessResponse([
             'id' => $tournament->getId(),

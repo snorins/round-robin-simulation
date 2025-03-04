@@ -1,25 +1,12 @@
 <script setup lang="ts">
-import type { ButtonType } from '../../types/button.type.ts';
-import type { PropType } from 'vue';
+import type { ButtonType } from '../../../types/button.type.ts';
 
-defineProps({
-  type: {
-    type: String as PropType<ButtonType>,
-    required: true,
-  },
-  isLoading: {
-    type: Boolean,
-    required: true,
-  },
-  defaultText: {
-    type: String,
-    required: true,
-  },
-  loadingText: {
-    type: String,
-    required: true,
-  },
-});
+defineProps<{
+  type: ButtonType;
+  isLoading: boolean;
+  defaultText: string;
+  loadingText: string;
+}>();
 </script>
 
 <template>

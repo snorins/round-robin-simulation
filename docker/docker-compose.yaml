@@ -42,6 +42,6 @@ services:
       - |
         npm i vite -g
         npm ci
-        vite build --watch
+        vite build -w
     volumes:
       - ../src/round-robin-frontend:/var/www/

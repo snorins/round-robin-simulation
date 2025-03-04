@@ -1,16 +1,16 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import type { Tournament } from '../../../types/tournament.type.ts';
+import type { TournamentCreateResponse } from '../../../types/tournament.type.ts';
 import { ApiService } from '../../../services/api.service.ts';
 import InputLabel from '../../reusable/InputLabel.vue';
-import LoaderButton from '../../reusable/LoaderButton.vue';
 import TextInput from '../../reusable/input/TextInput.vue';
 import NumberInput from '../../reusable/input/NumberInput.vue';
 import { isErrorResponse } from '../../../helpers/api.helper.ts';
 import type { JsonApiErrors } from '../../../types/api.type.ts';
 import { API_ENDPOINT } from '../../../constants/api.constant.ts';
 import { TOURNAMENT_TEAM_COUNT } from '../../../constants/tournament.constant.ts';
+import LoaderButton from '../../reusable/button/LoaderButton.vue';
 
 const isLoading = ref<boolean>(false);
 const teamCount = ref<number>(3);
@@ -34,7 +34,10 @@ const submit = (): void => {
   };
 
   ApiService
-      .post<Tournament>(API_ENDPOINT.simulateTournament, requestBody)
+      .post<TournamentCreateResponse>(
+          API_ENDPOINT.simulateTournament,
+          requestBody,
+      )
       .then((response) => {
         if (isErrorResponse(response)) {
           errors.value = response.errors;

@@ -2,10 +2,10 @@
 import { useRoute, useRouter } from 'vue-router';
 import { ref } from 'vue';
 import { ApiService } from '../../../services/api.service.ts';
-import type { TournamentView } from '../../../types/tournament.type.ts';
-import Link from '../../reusable/link/Link.vue';
+import type { TournamentViewResponse } from '../../../types/tournament.type.ts';
 import InfoAlert from '../../reusable/alert/InfoAlert.vue';
 import { API_ENDPOINT } from '../../../constants/api.constant.ts';
+import Link from '../../reusable/link/Link.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -13,10 +13,10 @@ const router = useRouter();
 const tournamentId = Number(route.params.id);
 const isLoading = ref<Boolean>(true);
 
-const tournamentView = ref<TournamentView>();
+const tournamentView = ref<TournamentViewResponse>();
 
 ApiService
-    .get<TournamentView>(`${API_ENDPOINT.tournament}/${tournamentId}`)
+    .get<TournamentViewResponse>(`${API_ENDPOINT.tournament}/${tournamentId}`)
     .then(({ data }) => tournamentView.value = data)
     .finally(() => isLoading.value = false);
 

@@ -29,10 +29,10 @@ readonly class TournamentSimulatorService
         $teamShiftingIndexes = $this->getTeamShiftingIndexes($teamNames);
 
         foreach (range(1, $this->getRoundCount($teamNames)) as $round) {
-            $shiftedIndexes = array_merge([0], $teamShiftingIndexes);
+            $teamShiftedIndexes = array_merge([0], $teamShiftingIndexes);
 
             [$teamOneIndexes, $teamTwoIndexes] = $this->getTeamPairingIndexes(
-                $shiftedIndexes,
+                $teamShiftedIndexes,
             );
 
             $this->generateGames(
@@ -155,11 +155,11 @@ readonly class TournamentSimulatorService
                 continue;
             }
 
-            $game = new Game();
-            $game->setTournament($tournament);
-
             $teamOne = $this->teamGeneratorService->findOneByName($teamOneName, $teams);
             $teamTwo = $this->teamGeneratorService->findOneByName($teamTwoName, $teams);
+
+            $game = new Game();
+            $game->setTournament($tournament);
 
             $teamOneScore = new TeamScore();
             $teamOneScore->setGame($game);

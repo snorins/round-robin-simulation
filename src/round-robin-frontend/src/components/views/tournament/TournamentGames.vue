@@ -2,7 +2,7 @@
 import { useRoute } from 'vue-router';
 import { ref } from 'vue';
 import { ApiService } from '../../../services/api.service.ts';
-import type { TournamentView } from '../../../types/tournament.type.ts';
+import type { TournamentViewResponse } from '../../../types/tournament.type.ts';
 import Link from '../../reusable/link/Link.vue';
 import { API_ENDPOINT } from '../../../constants/api.constant.ts';
 
@@ -12,10 +12,10 @@ const tournamentId = Number(route.params.id);
 const highlightTeamId = Number(route.query.teamId);
 const isLoading = ref<boolean>(true);
 
-const tournamentView = ref<TournamentView>();
+const tournamentView = ref<TournamentViewResponse>();
 
 ApiService
-    .get<TournamentView>(`${API_ENDPOINT.tournament}/${tournamentId}`)
+    .get<TournamentViewResponse>(`${API_ENDPOINT.tournament}/${tournamentId}`)
     .then(({ data }) => tournamentView.value = data)
     .finally(() => isLoading.value = false);
 </script>

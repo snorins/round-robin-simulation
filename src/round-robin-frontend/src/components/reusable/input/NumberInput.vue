@@ -6,7 +6,7 @@ const props = defineProps<{
   labelText: string;
   hasError: boolean;
   placeholder?: string;
-}>()
+}>();
 
 const model = defineModel<number>({
   required: true,

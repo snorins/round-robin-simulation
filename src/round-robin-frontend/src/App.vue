@@ -4,10 +4,10 @@ import BaseLayout from './components/layouts/BaseLayout.vue';
 
 <template>
   <BaseLayout>
-    <RouterView></RouterView>
+    <RouterView />
   </BaseLayout>
 </template>
 
 <style>
-@import "tailwindcss";
+@import 'tailwindcss';
 </style>

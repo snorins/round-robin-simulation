@@ -1,5 +1,5 @@
-export type PaginatedEntries<Data> = {
-    entries: Data[];
+export type PaginatedEntries<Entry> = {
+    entries: Entry[];
     total: number;
     page: number;
     limit: number;
