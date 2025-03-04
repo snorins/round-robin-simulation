@@ -3,7 +3,7 @@ import NavLink from '../reusable/link/NavLink.vue';
 </script>
 
 <template>
-  <nav class="mx-auto max-w-[39rem] bg-white border-gray-200">
+  <nav class="mx-auto max-w-[36rem] bg-white border-gray-200">
     <ul class="flex justify-between py-8 border-bottom">
       <li>
         <NavLink to="/" text="Simulate" />
@@ -24,7 +24,7 @@ import NavLink from '../reusable/link/NavLink.vue';
     </ul>
   </nav>
 
-  <section class="flex flex-col gap-8 mx-auto max-w-[39rem] my-16">
+  <section class="flex flex-col gap-8 mx-auto max-w-[36rem] mt-18 mb-16">
     <slot />
   </section>
 </template>
