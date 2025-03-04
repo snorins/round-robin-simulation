@@ -34,6 +34,24 @@ readonly class TournamentSimulatorService
         foreach (range(1, $roundCount) as $round) {
             $shiftedIndexes = array_merge([0], $teamIndexes);
 
+            /**
+             * Pairs will be matched by taking each of the team names
+             * using the same array index from both arrays.
+             *
+             * Example.
+             *
+             * $teamOneIndexes = [0, 1, 2];
+             * $teamTwoIndexes = [5, 4, 3];
+             *
+             * $teamNames = [
+             *     0 => 'Real Madrid',
+             *     1 => 'Barcelona',
+             *     2 => 'Man City',
+             *     3 => 'Man United',
+             *     4 => 'Chelsea',
+             *     5 => 'Liverpool',
+             * ];
+             */
             $teamOneIndexes = array_slice($shiftedIndexes, 0, $middleIndex);
             $teamTwoIndexes = array_reverse(array_slice($shiftedIndexes, $middleIndex));
 
