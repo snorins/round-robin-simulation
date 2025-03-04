@@ -1,0 +1,39 @@
+#!/bin/bash
+
+cd docker || exit
+
+app:setup() {
+  echo "Setting up the application..."
+
+  docker compose up -d --force-recreate
+
+  echo "Installing composer dependencies..."
+  docker exec round_robin_backend composer install
+
+  echo "Running migrations..."
+  docker exec round_robin_backend symfony console doctrine:migrations:migrate
+}
+
+app:start() {
+  echo "Starting the application..."
+
+  docker compose up -d --force-recreate
+}
+
+app:stop() {
+  echo "Shutting down the application..."
+
+  docker compose down
+}
+
+db:migrate() {
+  echo "Running migrations..."
+
+  docker exec round_robin_backend symfony console doctrine:migrations:migrate
+}
+
+tests:run() {
+  docker exec round_robin_backend php bin/phpunit
+}
+
+eval $1

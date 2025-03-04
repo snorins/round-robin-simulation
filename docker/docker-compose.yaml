@@ -1,0 +1,47 @@
+services:
+  backend:
+    build:
+      context: ./
+      dockerfile: backend.Dockerfile
+    container_name: round_robin_backend
+    working_dir: /var/www/
+    volumes:
+      - ../src/round-robin-backend:/var/www/
+  backend_server:
+    image: nginx:1.27.4-alpine
+    container_name: round_robin_backend_server
+    ports:
+      - "8000:80"
+    volumes:
+      - ../src/round-robin-backend:/var/www/
+      - ./nginx-backend:/etc/nginx/conf.d/
+  storage:
+    image: postgres:17.4-alpine
+    ports:
+      - "5432:5432"
+    container_name: round_robin_storage
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: round_robin_tournaments
+  frontend_server:
+    image: nginx:1.27.4-alpine
+    container_name: round_robin_frontend_server
+    ports:
+      - "5173:5173"
+    volumes:
+      - ../src/round-robin-frontend:/var/www/
+      - ./nginx-frontend:/etc/nginx/conf.d/
+  frontend:
+    image: node:23.9-alpine
+    container_name: round_robin_frontend
+    working_dir: /var/www/
+    command:
+      - /bin/sh
+      - -c
+      - |
+        npm i vite -g
+        npm ci
+        vite build --watch
+    volumes:
+      - ../src/round-robin-frontend:/var/www/
