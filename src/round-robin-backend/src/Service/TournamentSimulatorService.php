@@ -26,40 +26,14 @@ readonly class TournamentSimulatorService
     {
         $teams = $this->teamGeneratorService->generate($teamCount);
         $teamNames = $this->teamGeneratorService->getNames($teams);
-        $teamIndexes = $this->getTeamIndexes($teamNames);
+        $teamShiftingIndexes = $this->getTeamShiftingIndexes($teamNames);
 
-        $roundCount = count($teamNames) - 1;
-        $middleIndex = $roundCount / 2 + 1;
+        foreach (range(1, $this->getRoundCount($teamNames)) as $round) {
+            $shiftedIndexes = array_merge([0], $teamShiftingIndexes);
 
-        foreach (range(1, $roundCount) as $round) {
-            $shiftedIndexes = array_merge([0], $teamIndexes);
-
-            /**
-             * Pairs will be matched by taking each of the team names
-             * using the same array index from both arrays.
-             *
-             * Example.
-             *
-             * $teamOneIndexes = [0, 1, 2];
-             * $teamTwoIndexes = [5, 4, 3];
-             *
-             * $teamNames = [
-             *     0 => 'Real Madrid',
-             *     1 => 'Barcelona',
-             *     2 => 'Man City',
-             *     3 => 'Man United',
-             *     4 => 'Chelsea',
-             *     5 => 'Liverpool',
-             * ];
-             *
-             * $pairs = [
-             *     0 => 5,
-             *     1 => 4,
-             *     2 => 3,
-             * ];
-             */
-            $teamOneIndexes = array_slice($shiftedIndexes, 0, $middleIndex);
-            $teamTwoIndexes = array_reverse(array_slice($shiftedIndexes, $middleIndex));
+            [$teamOneIndexes, $teamTwoIndexes] = $this->getTeamPairingIndexes(
+                $shiftedIndexes,
+            );
 
             $this->generateGames(
                 teamOneIndexes: $teamOneIndexes,
@@ -70,7 +44,7 @@ readonly class TournamentSimulatorService
                 round: $round,
             );
 
-            $teamIndexes[] = array_shift($teamIndexes);
+            $teamShiftingIndexes[] = array_shift($teamShiftingIndexes);
         }
 
         $this->entityManager->persist($tournament);
@@ -85,6 +59,75 @@ readonly class TournamentSimulatorService
         return $this->gameRepository->findBy([
             'tournament' => $tournament,
         ]);
+    }
+
+    /**
+     * Returns all indexes that will be shifted around.
+     *
+     * Zeroth element always stays in the same
+     * (first) position so it's not returned.
+     *
+     * @param string[] $teamNames
+     * @return int[]
+     */
+    private function getTeamShiftingIndexes(array $teamNames): array
+    {
+        $indexes = array_keys($teamNames);
+        array_shift($indexes);
+
+        return $indexes;
+    }
+
+    /**
+     * Returns the amount of rounds to play based on how many teams
+     * will participate in a tournament.
+     *
+     * @param string[] $teamNames All team names. Including 'Bye'
+     * @return int
+     */
+    private function getRoundCount(array $teamNames): int
+    {
+        return count($teamNames) - 1;
+    }
+
+    /**
+     * Pairs will be matched by taking each of the team names
+     * using the same array index from both arrays.
+     *
+     * Example.
+     *
+     * $teamOneIndexes = [0, 1, 2];
+     * $teamTwoIndexes = [5, 4, 3];
+     *
+     * $teamNames = [
+     *     0 => 'Real Madrid',
+     *     1 => 'Barcelona',
+     *     2 => 'Man City',
+     *     3 => 'Man United',
+     *     4 => 'Chelsea',
+     *     5 => 'Liverpool',
+     * ];
+     *
+     * $pairs = [
+     *     0 => 5,
+     *     1 => 4,
+     *     2 => 3,
+     * ];
+     *
+     * @param int[] $shiftedIndexes
+     * @return array
+     */
+    private function getTeamPairingIndexes(array $shiftedIndexes): array
+    {
+        $middleIndex = count($shiftedIndexes) / 2;
+
+        $teamOneIndexes = array_slice($shiftedIndexes, 0, $middleIndex);
+        $teamTwoIndexes = array_reverse(array_slice($shiftedIndexes, $middleIndex));
+
+        return [
+            $teamOneIndexes,
+            $teamTwoIndexes,
+        ];
     }
 
     /**
@@ -138,24 +181,6 @@ readonly class TournamentSimulatorService
             $this->entityManager->persist($teamTwoScore);
             $this->entityManager->persist($game);
         }
-    }
-
-    /**
-     * Returns all the team indexes from
-     * name array — except the first one.
-     *
-     * These will be indexes that will be swapped around.
-     * First element always stays in the same position.
-     *
-     * @param string[] $teamNames
-     * @return int[]
-     */
-    private function getTeamIndexes(array $teamNames): array
-    {
-        $indexes = array_keys($teamNames);
-        array_shift($indexes);
-
-        return $indexes;
     }
 
     private function generateScore(): int
