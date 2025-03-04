@@ -12,22 +12,23 @@ const tournamentId = Number(route.params.id);
 const highlightTeamId = Number(route.query.teamId);
 const isLoading = ref<boolean>(true);
 
-const tournamentStructure = ref<TournamentView>();
+const tournamentView = ref<TournamentView>();
 
 ApiService
     .get<TournamentView>(`${API_ENDPOINT.tournament}/${tournamentId}`)
-    .then(({ data }) => tournamentStructure.value = data)
+    .then(({ data }) => tournamentView.value = data)
     .finally(() => isLoading.value = false);
 </script>
 
 <template>
   <div v-if="isLoading">Loading...</div>
-  <div v-else-if="!tournamentStructure">Could not find tournament games!</div>
+  <div v-else-if="!tournamentView">Could not find tournament games!</div>
   <div v-else class="flex flex-col gap-6">
-    <div class="flex justify-end">
+    <div class="flex justify-between">
+      <p>Tournament — {{ tournamentView.name }}</p>
       <Link :to="`/tournaments/${tournamentId}`" text="Back to leaderboard" />
     </div>
-    <div v-for="round in tournamentStructure.rounds" :key="round.current">
+    <div v-for="round in tournamentView.rounds" :key="round.current">
       <p class="text-center">Round {{ round.current }}</p>
 
       <div v-for="game in round.games" class="grid grid-cols-10">
