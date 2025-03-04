@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import type { TournamentCreateResponse } from '../../../types/tournament.type.ts';
 import { ApiService } from '../../../services/api.service.ts';
-import InputLabel from '../../reusable/InputLabel.vue';
 import TextInput from '../../reusable/input/TextInput.vue';
 import NumberInput from '../../reusable/input/NumberInput.vue';
 import { isErrorResponse } from '../../../helpers/api.helper.ts';
@@ -11,15 +10,16 @@ import type { JsonApiErrors } from '../../../types/api.type.ts';
 import { API_ENDPOINT } from '../../../constants/api.constant.ts';
 import { TOURNAMENT_TEAM_COUNT } from '../../../constants/tournament.constant.ts';
 import LoaderButton from '../../reusable/button/LoaderButton.vue';
-
-const isLoading = ref<boolean>(false);
-const teamCount = ref<number>(3);
-const tournamentName = ref<string>('');
-
-const errors = ref<JsonApiErrors>({});
-const hasGlobalError = ref<boolean>(false);
+import InputLabel from '../../reusable/input/InputLabel.vue';
 
 const router = useRouter();
+
+const teamCount = ref<number>(3);
+const tournamentName = ref<string>('');
+const isLoading = ref<boolean>(false);
+
+const apiErrors = ref<JsonApiErrors>({});
+const hasGlobalError = ref<boolean>(false);
 
 const submit = (): void => {
   if (isLoading.value) {
@@ -40,7 +40,7 @@ const submit = (): void => {
       )
       .then((response) => {
         if (isErrorResponse(response)) {
-          errors.value = response.errors;
+          apiErrors.value = response.errors;
         } else {
           router.push(`/tournaments/${response.data.id}`);
         }
@@ -60,7 +60,7 @@ const submit = (): void => {
       <TextInput
           v-model="tournamentName"
           id="tournament-name"
-          :error-message="errors.name?.message"
+          :error-message="apiErrors.name?.message"
           placeholder="Colosseum"
       />
     </div>
@@ -72,7 +72,7 @@ const submit = (): void => {
           :min="TOURNAMENT_TEAM_COUNT.MIN"
           :max="TOURNAMENT_TEAM_COUNT.MAX"
           placeholder="3"
-          :has-error="Boolean(errors.teamCount)"
+          :has-error="Boolean(apiErrors.teamCount)"
           label-text="Choose the amount of teams that will play in this tournament:"
       />
     </div>

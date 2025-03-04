@@ -6,6 +6,7 @@ import type { PaginatedEntries } from '../../../types/pagination.type.ts';
 import { useRoute, useRouter } from 'vue-router';
 import Paginator from '../../reusable/pagination/Paginator.vue';
 import { API_ENDPOINT } from '../../../constants/api.constant.ts';
+import DefaultTable from '../../reusable/table/GenericTable.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -33,16 +34,7 @@ fetchTeams(page.value);
     Could not find any teams...
   </div>
   <div v-else class="relative overflow-x-auto min-h-[570px]">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-      <tr>
-        <th scope="col" class="px-6 py-3">Id</th>
-        <th scope="col" class="px-6 py-3">Name</th>
-        <th scope="col" class="px-6 py-3">Total Wins</th>
-        <th scope="col" class="px-6 py-3">Total Score</th>
-      </tr>
-      </thead>
-      <tbody>
+    <DefaultTable :column-names="['Id', 'Name', 'Total Wins', 'Total Score']">
       <tr
           class="bg-white border-b border-gray-200"
           v-for="team in paginatedTeams.entries"
@@ -53,8 +45,7 @@ fetchTeams(page.value);
         <td class="px-6 py-4">{{ team.wins }}</td>
         <td class="px-6 py-4">{{ team.score }}</td>
       </tr>
-      </tbody>
-    </table>
+    </DefaultTable>
   </div>
 
   <Paginator

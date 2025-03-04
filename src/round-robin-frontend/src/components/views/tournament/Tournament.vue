@@ -6,12 +6,13 @@ import type { TournamentViewResponse } from '../../../types/tournament.type.ts';
 import InfoAlert from '../../reusable/alert/InfoAlert.vue';
 import { API_ENDPOINT } from '../../../constants/api.constant.ts';
 import Link from '../../reusable/link/Link.vue';
+import GenericTable from '../../reusable/table/GenericTable.vue';
 
 const route = useRoute();
 const router = useRouter();
 
 const tournamentId = Number(route.params.id);
-const isLoading = ref<Boolean>(true);
+const isLoading = ref<boolean>(true);
 
 const tournamentView = ref<TournamentViewResponse>();
 
@@ -48,16 +49,7 @@ const highlightTeamGames = (teamId: number): void => {
 
     <p class="mb-4 text-sm">Leaderboard</p>
     <div class="relative overflow-x-auto mb-8">
-      <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-        <tr>
-          <th scope="col" class="px-6 py-3">Place</th>
-          <th scope="col" class="px-6 py-3">Team name</th>
-          <th scope="col" class="px-6 py-3">Wins</th>
-          <th scope="col" class="px-6 py-3">Total score</th>
-        </tr>
-        </thead>
-        <tbody>
+      <GenericTable :column-names="['Place', 'Team name', 'Wins', 'Total score']">
         <tr
             class="border-b border-gray-200 cursor-pointer hover:bg-gray-50"
             v-for="(team, index) in tournamentView.teams"
@@ -69,8 +61,7 @@ const highlightTeamGames = (teamId: number): void => {
           <td class="px-6 py-4">{{ team.wins }}</td>
           <td class="px-6 py-4">{{ team.score }}</td>
         </tr>
-        </tbody>
-      </table>
+      </GenericTable>
     </div>
   </div>
 </template>

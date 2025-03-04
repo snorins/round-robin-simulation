@@ -6,6 +6,7 @@ import type { Tournament } from '../../../types/tournament.type.ts';
 import type { PaginatedEntries } from '../../../types/pagination.type.ts';
 import { API_ENDPOINT } from '../../../constants/api.constant.ts';
 import Paginator from '../../reusable/pagination/Paginator.vue';
+import GenericTable from '../../reusable/table/GenericTable.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -33,15 +34,7 @@ fetchTournaments(page.value);
     Could not find any tournaments...
   </div>
   <div v-else class="relative overflow-x-auto min-h-[570px]">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-      <tr>
-        <th scope="col" class="px-6 py-3">Id</th>
-        <th scope="col" class="px-6 py-3">Name</th>
-        <th scope="col" class="px-6 py-3">Team Count</th>
-      </tr>
-      </thead>
-      <tbody>
+    <GenericTable :column-names="['Id', 'Name', 'Team Count']">
       <tr
           class="bg-white border-b border-gray-200 cursor-pointer hover:bg-gray-50"
           v-for="tournament in paginatedTournaments.entries"
@@ -52,8 +45,7 @@ fetchTournaments(page.value);
         <td class="px-6 py-4">{{ tournament.name }}</td>
         <td class="px-6 py-4">{{ tournament.teamCount }}</td>
       </tr>
-      </tbody>
-    </table>
+    </GenericTable>
   </div>
 
   <Paginator
